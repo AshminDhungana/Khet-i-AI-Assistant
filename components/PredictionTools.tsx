@@ -44,17 +44,18 @@ const PredictionTools: React.FC = () => {
   ] : [];
 
   return (
-    <div className="space-y-6">
-      <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+      {/* Input Form Column */}
+      <div className="lg:col-span-4 bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-fit">
         <h2 className="text-xl font-bold mb-4 text-gray-800 flex items-center gap-2">
           <ChartIcon className="text-blue-600" /> Yield Predictor
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-1">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Crop Type</label>
               <select 
-                className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
                 value={formData.crop}
                 onChange={(e) => setFormData({...formData, crop: e.target.value})}
               >
@@ -69,7 +70,7 @@ const PredictionTools: React.FC = () => {
               <input 
                 type="number" 
                 step="0.1"
-                className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
                 value={formData.area}
                 onChange={(e) => setFormData({...formData, area: Number(e.target.value)})}
               />
@@ -79,7 +80,7 @@ const PredictionTools: React.FC = () => {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Soil Type</label>
             <select 
-              className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
               value={formData.soil}
               onChange={(e) => setFormData({...formData, soil: e.target.value})}
             >
@@ -110,7 +111,7 @@ const PredictionTools: React.FC = () => {
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full bg-emerald-600 text-white py-3 rounded-xl font-bold shadow-lg active:scale-95 transition disabled:opacity-70 flex justify-center items-center"
+            className="w-full bg-emerald-600 text-white py-3 rounded-xl font-bold shadow-lg active:scale-95 transition disabled:opacity-70 flex justify-center items-center hover:bg-emerald-700"
           >
             {loading ? (
               <span className="animate-pulse">Calculating...</span>
@@ -119,56 +120,66 @@ const PredictionTools: React.FC = () => {
         </form>
       </div>
 
-      {result && (
-        <div className="space-y-6 animate-fade-in">
-          {/* Key Stats Cards */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-white p-4 rounded-xl border border-emerald-100 shadow-sm">
-              <span className="text-gray-500 text-xs uppercase font-bold">Est. Yield</span>
-              <div className="text-2xl font-bold text-gray-900 mt-1">{result.yield.value}</div>
-              <span className="text-xs text-emerald-600 font-medium">{result.yield.unit}</span>
+      {/* Results Column */}
+      <div className="lg:col-span-8 space-y-6">
+        {!result ? (
+           <div className="hidden lg:flex h-full min-h-[400px] items-center justify-center p-12 text-gray-400 border-2 border-dashed border-gray-200 rounded-xl bg-gray-50/50">
+             <div className="text-center">
+               <ChartIcon className="h-12 w-12 mx-auto mb-2 opacity-20" />
+               <p>Enter crop details to see prediction model</p>
+             </div>
+           </div>
+        ) : (
+          <div className="space-y-6 animate-fade-in">
+            {/* Key Stats Cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <div className="bg-white p-4 rounded-xl border border-emerald-100 shadow-sm">
+                <span className="text-gray-500 text-xs uppercase font-bold">Est. Yield</span>
+                <div className="text-2xl font-bold text-gray-900 mt-1">{result.yield.value}</div>
+                <span className="text-xs text-emerald-600 font-medium">{result.yield.unit}</span>
+              </div>
+              <div className="bg-white p-4 rounded-xl border border-blue-100 shadow-sm">
+                <span className="text-gray-500 text-xs uppercase font-bold">Biomass</span>
+                <div className="text-2xl font-bold text-gray-900 mt-1">{(result.biomass.value/1000).toFixed(1)}k</div>
+                <span className="text-xs text-blue-600 font-medium">kg/ha</span>
+              </div>
+              <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                <span className="text-gray-500 text-xs uppercase font-bold">Carbon</span>
+                <div className="text-2xl font-bold text-gray-900 mt-1">{result.carbonSequest}</div>
+                <span className="text-xs text-gray-600 font-medium">tons CO2/ha</span>
+              </div>
+              <div className="bg-white p-4 rounded-xl border border-amber-100 shadow-sm">
+                <span className="text-gray-500 text-xs uppercase font-bold">Harvest In</span>
+                <div className="text-2xl font-bold text-gray-900 mt-1">{result.daysToHarvest}</div>
+                <span className="text-xs text-amber-600 font-medium">Days</span>
+              </div>
             </div>
-            <div className="bg-white p-4 rounded-xl border border-blue-100 shadow-sm">
-              <span className="text-gray-500 text-xs uppercase font-bold">Biomass</span>
-              <div className="text-2xl font-bold text-gray-900 mt-1">{(result.biomass.value/1000).toFixed(1)}k</div>
-              <span className="text-xs text-blue-600 font-medium">kg/ha</span>
-            </div>
-            <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-              <span className="text-gray-500 text-xs uppercase font-bold">Carbon</span>
-              <div className="text-2xl font-bold text-gray-900 mt-1">{result.carbonSequest}</div>
-              <span className="text-xs text-gray-600 font-medium">tons CO2/ha</span>
-            </div>
-            <div className="bg-white p-4 rounded-xl border border-amber-100 shadow-sm">
-              <span className="text-gray-500 text-xs uppercase font-bold">Harvest In</span>
-              <div className="text-2xl font-bold text-gray-900 mt-1">{result.daysToHarvest}</div>
-              <span className="text-xs text-amber-600 font-medium">Days</span>
-            </div>
-          </div>
 
-          {/* Chart */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <h3 className="text-sm font-bold text-gray-600 mb-6">Yield Comparison (Tonnes/Ha)</h3>
-            <div className="h-64 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={chartData} margin={{ top: 0, right: 0, left: -25, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 12}} dy={10} />
-                  <YAxis axisLine={false} tickLine={false} tick={{fontSize: 12}} />
-                  <Tooltip 
-                    cursor={{fill: '#f3f4f6'}}
-                    contentStyle={{borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'}} 
-                  />
-                  <Bar dataKey="yield" radius={[4, 4, 0, 0]}>
-                    {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={index === 0 ? '#10b981' : '#94a3b8'} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
+            {/* Chart */}
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-[350px]">
+              <h3 className="text-sm font-bold text-gray-600 mb-6">Yield Comparison (Tonnes/Ha)</h3>
+              <div className="h-[260px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={chartData} margin={{ top: 0, right: 0, left: -25, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 12}} dy={10} />
+                    <YAxis axisLine={false} tickLine={false} tick={{fontSize: 12}} />
+                    <Tooltip 
+                      cursor={{fill: '#f3f4f6'}}
+                      contentStyle={{borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'}} 
+                    />
+                    <Bar dataKey="yield" radius={[4, 4, 0, 0]}>
+                      {chartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={index === 0 ? '#10b981' : '#94a3b8'} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

@@ -44,7 +44,7 @@ const VoiceNote: React.FC<VoiceNoteProps> = ({ onNoteCreate }) => {
   };
 
   return (
-    <div className="fixed bottom-24 right-4 z-40">
+    <div className="fixed bottom-24 right-4 z-40 md:right-8 md:bottom-8">
       {/* Recording Overlay */}
       {isRecording && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
@@ -77,6 +77,7 @@ const VoiceNote: React.FC<VoiceNoteProps> = ({ onNoteCreate }) => {
         className={`w-14 h-14 rounded-full shadow-xl flex items-center justify-center transition transform hover:scale-105 active:scale-95 ${
           processing ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-500 hover:bg-red-600'
         }`}
+        title="Record Voice Note"
       >
         {processing ? (
           <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />

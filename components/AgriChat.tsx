@@ -58,15 +58,20 @@ const AgriChat: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-col h-[calc(100vh-140px)] bg-gray-50">
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+    <div className="flex flex-col h-[calc(100vh-140px)] md:h-[calc(100vh-80px)] bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      {/* Header for Chat (Desktop visual) */}
+      <div className="bg-blue-600 text-white p-4 text-center font-medium md:text-left shadow-sm">
+        Agriculture Expert AI
+      </div>
+
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
         {messages.map((msg) => (
           <div 
             key={msg.id} 
             className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div 
-              className={`max-w-[85%] p-4 rounded-2xl text-sm leading-relaxed shadow-sm ${
+              className={`max-w-[85%] md:max-w-[70%] p-4 rounded-2xl text-sm leading-relaxed shadow-sm ${
                 msg.role === 'user' 
                   ? 'bg-blue-600 text-white rounded-br-none' 
                   : 'bg-white text-gray-800 border border-gray-200 rounded-bl-none'

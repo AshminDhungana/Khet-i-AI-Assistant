@@ -1,3 +1,4 @@
+
 export interface ImageAnalysisResult {
   timestamp: string;
   imageUrl: string;
@@ -44,4 +45,13 @@ export interface VoiceNote {
   text: string;
   date: Date;
   actionItems: string[];
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  farmName?: string;
+  avatarUrl?: string;
+  role?: 'admin' | 'user';
 }
