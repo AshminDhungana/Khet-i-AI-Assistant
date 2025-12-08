@@ -1,0 +1,9 @@
+{
+  "name": "Khet-i AI Assistant",
+  "description": "Enterprise-grade agricultural assistant for smallholder farmers using Gemini Vision and Predictive Analytics.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
