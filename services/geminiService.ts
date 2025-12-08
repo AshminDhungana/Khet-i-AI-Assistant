@@ -109,3 +109,35 @@ export const chatWithExpert = async (history: ChatMessage[], newMessage: string)
     return "Sorry, I'm having trouble connecting to the agricultural database right now. Please try again.";
   }
 };
+
+export const generateMediaAsset = async (prompt: string): Promise<string | null> => {
+  if (!process.env.API_KEY) {
+    console.warn("Skipping image generation: No API Key");
+    return null;
+  }
+
+  const ai = getAI();
+
+  try {
+    // Using gemini-2.5-flash-image for image generation
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash-image',
+      contents: {
+        parts: [{ text: prompt }]
+      }
+    });
+
+    // Iterate through parts to find the image
+    if (response.candidates && response.candidates.length > 0) {
+      for (const part of response.candidates[0].content.parts) {
+        if (part.inlineData && part.inlineData.data) {
+           return `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
+        }
+      }
+    }
+    return null;
+  } catch (error) {
+    console.error("Image Generation Error:", error);
+    return null;
+  }
+};
