@@ -68,7 +68,7 @@ This application requires a Google Gemini API key.
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/khet-i.git
+git clone https://github.com/AshminDhungana/khet-i.git
 
 # Install dependencies
 npm install
